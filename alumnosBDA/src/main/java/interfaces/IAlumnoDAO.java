@@ -13,11 +13,13 @@ import java.util.List;
  * @author ReneEzequiel23
  */
 public interface IAlumnoDAO {
-    void agregarAlumno(AlumnoEntidad alumno)throws PersistenciaException;
+    AlumnoEntidad agregarAlumno(AlumnoEntidad alumno)throws PersistenciaException;
     
     List<AlumnoEntidad> listaAlumnos() throws PersistenciaException;
     
-    void eliminarAlumno(Long id) throws PersistenciaException;
+    Long eliminarAlumno(Long id) throws PersistenciaException;
     
-    void editarAlumno(AlumnoEntidad alumno) throws PersistenciaException;
+    AlumnoEntidad editarAlumno(AlumnoEntidad alumno) throws PersistenciaException;
+    
+    AlumnoEntidad consultarPorID(Long id) throws PersistenciaException;
 }

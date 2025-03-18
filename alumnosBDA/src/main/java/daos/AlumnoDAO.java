@@ -24,7 +24,7 @@ public class AlumnoDAO implements IAlumnoDAO{
     }
     
     @Override
-    public void agregarAlumno(AlumnoEntidad alumno) throws PersistenciaException {
+    public AlumnoEntidad agregarAlumno(AlumnoEntidad alumno) throws PersistenciaException {
         EntityManager entityManager = conexionBD.obtenerEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
 
@@ -32,6 +32,7 @@ public class AlumnoDAO implements IAlumnoDAO{
             entityTransaction.begin();
             entityManager.persist(alumno);
             entityTransaction.commit();
+            return this.consultarPorID(alumno.getId());
         } catch (Exception e) {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -59,7 +60,7 @@ public class AlumnoDAO implements IAlumnoDAO{
     }
     
     @Override
-    public void eliminarAlumno(Long id) throws PersistenciaException {
+    public Long eliminarAlumno(Long id) throws PersistenciaException {
         EntityManager entityManager = conexionBD.obtenerEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
 
@@ -70,6 +71,7 @@ public class AlumnoDAO implements IAlumnoDAO{
                 entityManager.remove(alumno);
             }
             entityTransaction.commit();
+            return  id;
         } catch (Exception e) {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -81,7 +83,7 @@ public class AlumnoDAO implements IAlumnoDAO{
     }
     
     @Override
-    public void editarAlumno(AlumnoEntidad alumno) throws PersistenciaException {
+    public AlumnoEntidad editarAlumno(AlumnoEntidad alumno) throws PersistenciaException {
         EntityManager entityManager = conexionBD.obtenerEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
 
@@ -89,6 +91,7 @@ public class AlumnoDAO implements IAlumnoDAO{
             entityTransaction.begin();
             entityManager.merge(alumno);
             entityTransaction.commit();
+            return this.consultarPorID(alumno.getId());
         } catch (Exception e) {
             if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
@@ -97,5 +100,21 @@ public class AlumnoDAO implements IAlumnoDAO{
         } finally {
             entityManager.close();
         }
+    }
+    
+    @Override
+    public AlumnoEntidad consultarPorID(Long id) throws PersistenciaException {
+        EntityManager entityManager = conexionBD.obtenerEntityManager();
+        AlumnoEntidad beneficiario = null;
+
+        try {
+            beneficiario = entityManager.find(AlumnoEntidad.class, id);
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al leer por ID", e);
+        } finally {
+            entityManager.close();
+        }
+
+        return beneficiario;
     }
 }

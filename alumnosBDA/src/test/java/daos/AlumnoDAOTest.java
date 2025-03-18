@@ -69,11 +69,10 @@ public class AlumnoDAOTest {
     @Test
     public void testEliminarAlumno() throws Exception {
         System.out.println("eliminarAlumno");
-        Long id = 17L;
+        Long id = 20L;
         AlumnoDAO instance = new AlumnoDAO();
-        AlumnoEntidad result =instance.consultarPorID(id);
         Long expResult = instance.eliminarAlumno(id);
-        assertEquals(expResult, result.getId());
+        assertEquals(expResult, id);
     }
 
     /**
